@@ -1,3 +1,3 @@
-# seminario_de_integracion_manana_macias
+# MAteria: Seminario de integracion
 
 ## Alumno: Macias, Alex
