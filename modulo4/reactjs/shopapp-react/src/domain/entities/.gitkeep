@@ -1,0 +1,2 @@
+# domain/entities — tipos puros del negocio (Product, Order, User...)
+# Sin imports externos — TypeScript puro
