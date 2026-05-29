@@ -23,7 +23,7 @@ print(sumar(5,6))
 print('Funcion con valor por posicion')
 def presentar(nombre, edad,ciudad):
     print(f'{nombre},{edad}, {ciudad}')
-presentar('Danna', 26, 'Quito')  #por posicion
+presentar('Alex', 19, 'Quito')  #por posicion
 presentar(ciudad= 'guayaquil',nombre='Juan', edad=40) #por nombre
 
 print('Funcion con valor por defecto')
