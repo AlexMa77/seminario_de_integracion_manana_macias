@@ -1,23 +1,23 @@
 // Concepto puro
 class Circulo {
-    private _radio: number;
+  private _radio: number;
 
-    constructor(radio: number) {
-        this._radio = radio;
-    }
+  constructor(radio: number) {
+    this._radio = radio;
+  }
 
-    get radio(): number {
-        return this._radio;
-    }
+  get radio(): number {
+    return this._radio;
+  }
 
-    set radio(valor: number) {
-        if (valor <= 0) throw new Error("El radio debe ser positivo");
-        this._radio = valor;
-    }
+  set radio(valor: number) {
+    if (valor <= 0) throw new Error("El radio debe ser positivo");
+    this._radio = valor;
+  }
 
-    get area(): number {
-        return Math.PI * this._radio ** 2;
-    }
+  get area(): number {
+    return Math.PI * this._radio ** 2;
+  }
 }
 
 const c = new Circulo(5);

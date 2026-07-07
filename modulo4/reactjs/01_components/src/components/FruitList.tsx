@@ -1,4 +1,5 @@
 // src/components/FruitList.tsx
+import React from 'react'
 
 interface Fruit {
   name: string

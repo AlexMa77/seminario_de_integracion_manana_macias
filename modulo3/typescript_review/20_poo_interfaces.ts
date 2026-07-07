@@ -1,26 +1,26 @@
 // Concepto puro
 interface Serializable {
-    serializar(): string;
+  serializar(): string;
 }
 
 interface Validable {
-    esValido(): boolean;
+  esValido(): boolean;
 }
 
 class Pedido implements Serializable, Validable {
-    constructor(
-        public id: string,
-        public productos: string[],
-        public total: number
-    ) { }
+  constructor(
+    public id: string,
+    public productos: string[],
+    public total: number
+  ) {}
 
-    serializar(): string {
-        return JSON.stringify({ id: this.id, productos: this.productos, total: this.total });
-    }
+  serializar(): string {
+    return JSON.stringify({ id: this.id, productos: this.productos, total: this.total });
+  }
 
-    esValido(): boolean {
-        return this.productos.length > 0 && this.total > 0;
-    }
+  esValido(): boolean {
+    return this.productos.length > 0 && this.total > 0;
+  }
 }
 
 const pedido = new Pedido("P-001", ["Mouse", "Teclado"], 150);
