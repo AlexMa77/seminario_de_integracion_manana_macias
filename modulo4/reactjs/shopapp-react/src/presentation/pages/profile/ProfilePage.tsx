@@ -24,7 +24,6 @@ import { Button } from '@/presentation/components/ui/button'
 import { Separator } from '@/presentation/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/presentation/components/ui/tabs'
 import { Badge } from '@/presentation/components/ui/badge'
-import { ImageUploader } from '@/presentation/components/ImageUploader'
 
 // ─── Schema de validación ───────────────────────────────────────────────────
 
@@ -40,8 +39,7 @@ type ProfileFormData = z.infer<typeof profileSchema>
 
 export default function ProfilePage() {
   const isStaff = useAuthStore((s) => s.user?.is_staff)
-  const { profile, isLoading, isSaving, error, fetchProfile, updateProfile, uploadAvatar } =
-    useProfileStore()
+  const { profile, isLoading, isSaving, error, fetchProfile, updateProfile } = useProfileStore()
 
   useEffect(() => {
     fetchProfile()
@@ -66,10 +64,6 @@ export default function ProfilePage() {
       })
     }
   }, [profile, reset])
-
-  async function handleAvatarUpload(file: File) {
-    await uploadAvatar(file)
-  }
 
   async function onSubmit(data: ProfileFormData) {
     try {
@@ -115,12 +109,6 @@ export default function ProfilePage() {
             <CardContent className="space-y-6">
               <div className="flex items-center gap-5">
                 <UserAvatar user={profile} size="lg" />
-                <ImageUploader
-                  currentImageUrl={profile?.avatar_url ?? null}
-                  onUpload={handleAvatarUpload}
-                  circular
-                  className="hidden" // el área grande se reemplaza por el flujo de abajo — ver nota
-                />
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xl font-semibold">
@@ -155,16 +143,6 @@ export default function ProfilePage() {
                   <dd>{profile?.last_name || '—'}</dd>
                 </div>
               </dl>
-
-              {/* Sección dedicada para cambiar el avatar */}
-                <div className="flex flex-col items-center gap-3 border-t pt-6">
-                  <h3 className="text-sm font-medium text-muted-foreground">Foto de perfil</h3>
-                  <ImageUploader
-                    currentImageUrl={profile?.avatar_url ?? null}
-                    onUpload={handleAvatarUpload}
-                    circular
-                  />
-                </div>
             </CardContent>
           </Card>
         </TabsContent>

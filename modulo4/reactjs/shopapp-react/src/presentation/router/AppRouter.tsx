@@ -19,6 +19,7 @@ const CartPage = lazy(() => import('../pages/cart/CartPage'))
 const CheckoutPage = lazy(() => import('../pages/orders/CheckoutPage'))
 const OrdersPage = lazy(() => import('../pages/orders/OrdersPage'))
 const OrderDetailPage = lazy(() => import('../pages/orders/OrderDetailPage'))
+const ProfilePage = lazy(() => import('../pages/profile/ProfilePage'))
 
 
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
@@ -98,7 +99,7 @@ export default function AppRouter() {
                             path="/profile"
                             element={
                                 <ProtectedRoute>
-                                    <PlaceholderPage title="Perfil — Módulo 8" />
+                                    <ProfilePage />
                                 </ProtectedRoute>
                             }
                         />
