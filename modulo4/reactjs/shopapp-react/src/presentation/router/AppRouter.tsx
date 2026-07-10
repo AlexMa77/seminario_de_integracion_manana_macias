@@ -16,8 +16,11 @@ const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const CatalogPage = lazy(() => import('../pages/catalog/CatalogPage'))
 const ProductDetailPage = lazy(() => import('../pages/catalog/ProductDetailPage'))
 
+// Carrito — real desde el Módulo 6
+const CartPage = lazy(() => import('../pages/cart/CartPage'))
+
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
-// (Carrito → 6, Órdenes → 7, Perfil → 8, Admin → 9-13) y cada uno
+// (Órdenes → 7, Perfil → 8, Admin → 9-13) y cada uno
 // reemplaza aquí su propio <Route> por un lazy import real.
 
 // ─── Loader global ────────────────────────────────────────────────────────────
@@ -56,12 +59,12 @@ export default function AppRouter() {
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
 
-            {/* Requieren autenticación — placeholder hasta los módulos 6, 7 y 8 */}
+            {/* Requieren autenticación — reales o placeholder */}
             <Route
               path="/cart"
               element={
                 <ProtectedRoute>
-                  <PlaceholderPage title="Carrito — Módulo 6" />
+                  <CartPage />
                 </ProtectedRoute>
               }
             />
