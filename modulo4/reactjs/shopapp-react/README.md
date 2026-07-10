@@ -1,66 +1,32 @@
-# ShopApp React — Módulo 1
+# React + TypeScript + Vite
 
-Proyecto base con arquitectura hexagonal (Ports & Adapters).
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-## Stack
-- **Bundler**: Vite 6 + @vitejs/plugin-react
-- **Lenguaje**: TypeScript 5 con alias `@/`
-- **Estilos**: Tailwind CSS v4 + variables CSS + shadcn/ui
-- **Routing**: React Router v6
-- **Estado**: Zustand
-- **Validación**: Zod + react-hook-form
-- **HTTP**: Axios
+Currently, two official plugins are available:
 
-## Estructura
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-```
-src/
-├── domain/            ← entidades, enums, excepciones, ports, servicios puros
-├── application/       ← use-cases, DTOs
-├── infrastructure/    ← config, http, storage, adapters, factories
-└── presentation/      ← theme, utils, store, pages, components, router
-```
+## React Compiler
 
-## Comandos
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-```bash
-# Instalar dependencias
-npm install
+## Expanding the Oxlint configuration
 
-# Levantar en desarrollo
-npm run dev
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
 
-# Verificar TypeScript
-npx tsc --noEmit
-
-# Inicializar shadcn/ui (si no se hizo)
-npx shadcn@latest init
-
-# Instalar componentes shadcn
-npx shadcn@latest add button input label card badge
-npx shadcn@latest add form select textarea
-npx shadcn@latest add dialog alert-dialog
-npx shadcn@latest add table
-npx shadcn@latest add dropdown-menu
-npx shadcn@latest add toast
-npx shadcn@latest add skeleton
-npx shadcn@latest add avatar
-npx shadcn@latest add separator
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-## Variables de entorno
-
-Crea un archivo `.env` en la raíz:
-```
-VITE_API_BASE_URL=http://localhost:8000/api
-```
-
-## Regla de dependencias (Hexagonal)
-
-```
-presentation   →  application  →  domain   ✅
-infrastructure →  domain                    ✅
-domain         →  nada                      ✅
-application    →  infrastructure            ❌  (inyección vía factories)
-presentation   →  infrastructure            ❌  (solo a través de use-cases)
-```
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
