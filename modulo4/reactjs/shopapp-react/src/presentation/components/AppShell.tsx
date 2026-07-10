@@ -1,10 +1,7 @@
 // src/presentation/components/AppShell.tsx
 import { Outlet, Link, useNavigate, NavLink } from 'react-router-dom'
 import { ShoppingBag, ShoppingCart, Package, User, LogOut, LayoutDashboard } from 'lucide-react'
-import { useEffect } from 'react'
 import { useAuthStore } from '@/presentation/store/auth.store'
-import { useProfileStore } from '@/presentation/store/profile.store'
-import { useCartStore } from '@/presentation/store/cart.store'
 import { Button } from '@/presentation/components/ui/button'
 import { Badge } from '@/presentation/components/ui/badge'
 import {
@@ -15,9 +12,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/presentation/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback } from '@/presentation/components/ui/avatar'
 import { Separator } from '@/presentation/components/ui/separator'
-import { CartDrawer } from './CartDrawer'
-import { UserAvatar } from './UserAvatar'
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Obtiene las iniciales del username para el avatar. */
+function getInitials(username: string): string {
+  return username.slice(0, 2).toUpperCase()
+}
 
 /** Clases para los enlaces de navegación activos/inactivos. */
 function navLinkClass({ isActive }: { isActive: boolean }) {
@@ -32,20 +35,12 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
 export default function AppShell() {
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
-  const { profile, fetchProfile, clearProfile } = useProfileStore()
-  const cartItemCount = useCartStore((s) => s.itemCount())
-  const openCart = useCartStore((s) => s.openCart)
 
-  // Carga el perfil una sola vez cuando hay sesión activa
-  useEffect(() => {
-    if (user && !profile) {
-      fetchProfile()
-    }
-  }, [user, profile, fetchProfile])
+  // En módulos siguientes esto vendrá del CartStore
+  const cartItemCount = 0
 
   async function handleLogout() {
     await logout()
-    clearProfile()
     navigate('/login', { replace: true })
   }
 
@@ -97,19 +92,21 @@ export default function AppShell() {
               <Button
                 variant="ghost"
                 size="icon"
+                asChild
                 className="relative"
-                onClick={openCart}
                 aria-label="Carrito de compras"
               >
-                <ShoppingCart className="h-5 w-5" />
-                {cartItemCount > 0 && (
-                  <Badge
-                    variant="destructive"
-                    className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
-                  >
-                    {cartItemCount > 99 ? '99+' : cartItemCount}
-                  </Badge>
-                )}
+                <Link to="/cart">
+                  <ShoppingCart className="h-5 w-5" />
+                  {cartItemCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
+                    >
+                      {cartItemCount > 99 ? '99+' : cartItemCount}
+                    </Badge>
+                  )}
+                </Link>
               </Button>
             )}
 
@@ -122,7 +119,11 @@ export default function AppShell() {
                     className="relative h-9 w-9 rounded-full"
                     aria-label="Menú de usuario"
                   >
-                    <UserAvatar user={profile} size="sm" />
+                    <Avatar className="h-9 w-9">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                        {getInitials(user.username)}
+                      </AvatarFallback>
+                    </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
 
@@ -197,9 +198,6 @@ export default function AppShell() {
       <footer className="border-t py-4 text-center text-sm text-muted-foreground">
         ShopApp &copy; {new Date().getFullYear()}
       </footer>
-
-      {/* Cart Drawer */}
-      <CartDrawer />
     </div>
   )
 }
