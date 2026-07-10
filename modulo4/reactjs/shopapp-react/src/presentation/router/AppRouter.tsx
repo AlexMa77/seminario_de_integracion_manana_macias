@@ -27,8 +27,11 @@ const OrderDetailPage = lazy(() => import('../pages/orders/OrderDetailPage'))
 // Perfil — real desde el Módulo 8
 const ProfilePage = lazy(() => import('../pages/profile/ProfilePage'))
 
+// Admin — reales desde el Módulo 9
+const AdminDashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'))
+
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
-// (Admin → 9-13) y cada uno
+// (Admin Categorías/Productos/Órdenes/Usuarios) y cada uno
 // reemplaza aquí su propio <Route> por un lazy import real.
 
 // ─── Loader global ────────────────────────────────────────────────────────────
@@ -109,12 +112,12 @@ export default function AppRouter() {
               }
             />
 
-            {/* Requieren autenticación + rol staff — placeholder hasta los módulos 9 a 13 */}
+            {/* Requieren autenticación + rol staff */}
             <Route
               path="/admin"
               element={
                 <ProtectedRoute requireStaff>
-                  <PlaceholderPage title="Admin Dashboard — Módulo 9" />
+                  <AdminDashboardPage />
                 </ProtectedRoute>
               }
             />
