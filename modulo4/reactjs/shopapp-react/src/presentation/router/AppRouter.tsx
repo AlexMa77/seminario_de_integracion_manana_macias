@@ -71,6 +71,14 @@ export default function AppRouter() {
                             }
                         />
                         <Route
+                            path="/orders/new"
+                            element={
+                                <ProtectedRoute>
+                                    <CheckoutPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
                             path="/orders"
                             element={
                                 <ProtectedRoute>
