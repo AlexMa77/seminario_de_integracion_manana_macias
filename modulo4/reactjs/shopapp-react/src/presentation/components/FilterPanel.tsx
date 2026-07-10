@@ -28,7 +28,7 @@ function FilterContent() {
       <div>
         <p className="mb-2 text-sm font-medium">Categoría</p>
         <div className="flex flex-col gap-1">
-          <CategoryFilter layout="vertical" />
+          <CategoryFilter/>
         </div>
       </div>
 

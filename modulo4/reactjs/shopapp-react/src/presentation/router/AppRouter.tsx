@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
 import { useAuthStore } from '@/presentation/store/auth.store'
 import ProtectedRoute from './ProtectedRoute'
-import AppShell  from '@/presentation/components/AppShell'
 import PlaceholderPage from '../pages/PlaceholderPage'
+import AppShell from '../components/AppShell'
+
 
 // ─── Lazy imports ─────────────────────────────────────────────────────────────
 
@@ -12,6 +13,8 @@ import PlaceholderPage from '../pages/PlaceholderPage'
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const CatalogPage = lazy(() => import('../pages/catalog/CatalogPage'))
+const ProductDetailPage = lazy(() => import('../pages/catalog/ProductDetailPage'))
+
 
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
 // (Catálogo → 4/5, Carrito → 6, Órdenes → 7, Perfil → 8, Admin → 9-13) y cada uno
@@ -45,15 +48,13 @@ export default function AppRouter() {
           {/* ── Rutas de autenticación (sin AppShell) ── */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/" element={<CatalogPage />} />
 
           {/* ── Rutas con AppShell ── */}
           <Route element={<AppShell />}>
             {/* Públicas — placeholder hasta el módulo 4/5 */}
-            <Route path="/" element={<PlaceholderPage title="Catálogo — Módulo 4" />} />
             <Route path="/" element={<CatalogPage />} />
             <Route path="/catalog" element={<CatalogPage />} />
-            <Route path="/products/:id" element={<PlaceholderPage title="Detalle de producto — Módulo 5" />} />
+            <Route path="/products/:id" element={<ProductDetailPage />} />
 
             {/* Requieren autenticación — placeholder hasta los módulos 6, 7 y 8 */}
             <Route
