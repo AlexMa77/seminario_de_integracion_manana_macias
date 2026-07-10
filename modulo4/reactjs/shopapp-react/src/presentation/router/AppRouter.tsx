@@ -19,8 +19,13 @@ const ProductDetailPage = lazy(() => import('../pages/catalog/ProductDetailPage'
 // Carrito — real desde el Módulo 6
 const CartPage = lazy(() => import('../pages/cart/CartPage'))
 
+// Órdenes — reales desde el Módulo 7
+const CheckoutPage = lazy(() => import('../pages/orders/CheckoutPage'))
+const OrdersPage = lazy(() => import('../pages/orders/OrdersPage'))
+const OrderDetailPage = lazy(() => import('../pages/orders/OrderDetailPage'))
+
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
-// (Órdenes → 7, Perfil → 8, Admin → 9-13) y cada uno
+// (Perfil → 8, Admin → 9-13) y cada uno
 // reemplaza aquí su propio <Route> por un lazy import real.
 
 // ─── Loader global ────────────────────────────────────────────────────────────
@@ -59,7 +64,7 @@ export default function AppRouter() {
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
 
-            {/* Requieren autenticación — reales o placeholder */}
+            {/* Requieren autenticación — reales */}
             <Route
               path="/cart"
               element={
@@ -69,10 +74,18 @@ export default function AppRouter() {
               }
             />
             <Route
+              path="/orders/new"
+              element={
+                <ProtectedRoute>
+                  <CheckoutPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/orders"
               element={
                 <ProtectedRoute>
-                  <PlaceholderPage title="Órdenes — Módulo 7" />
+                  <OrdersPage />
                 </ProtectedRoute>
               }
             />
@@ -80,7 +93,7 @@ export default function AppRouter() {
               path="/orders/:id"
               element={
                 <ProtectedRoute>
-                  <PlaceholderPage title="Detalle de orden — Módulo 7" />
+                  <OrderDetailPage />
                 </ProtectedRoute>
               }
             />
