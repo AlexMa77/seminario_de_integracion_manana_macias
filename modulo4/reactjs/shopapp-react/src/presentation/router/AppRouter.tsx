@@ -24,8 +24,11 @@ const CheckoutPage = lazy(() => import('../pages/orders/CheckoutPage'))
 const OrdersPage = lazy(() => import('../pages/orders/OrdersPage'))
 const OrderDetailPage = lazy(() => import('../pages/orders/OrderDetailPage'))
 
+// Perfil — real desde el Módulo 8
+const ProfilePage = lazy(() => import('../pages/profile/ProfilePage'))
+
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
-// (Perfil → 8, Admin → 9-13) y cada uno
+// (Admin → 9-13) y cada uno
 // reemplaza aquí su propio <Route> por un lazy import real.
 
 // ─── Loader global ────────────────────────────────────────────────────────────
@@ -101,7 +104,7 @@ export default function AppRouter() {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <PlaceholderPage title="Perfil — Módulo 8" />
+                  <ProfilePage />
                 </ProtectedRoute>
               }
             />
