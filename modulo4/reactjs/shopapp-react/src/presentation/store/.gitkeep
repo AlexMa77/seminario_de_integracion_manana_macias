@@ -1,0 +1,1 @@
+# presentation/store — stores Zustand (*.store.ts) — llaman a use-cases, nunca a adapters (Módulo 3+)
