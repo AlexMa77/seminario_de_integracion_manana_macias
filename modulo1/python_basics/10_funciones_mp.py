@@ -31,7 +31,7 @@ print("Funcion con valor por defecto")
 def saludo_Con_Parametros_Por_Defecto(nombre, saludo="Hola", puntuacion="!"):
     print(f"{saludo}, {nombre} {puntuacion}")
 
-saludo_Con_Parametros_Por_Defecto("Danna", "Buenos dias", "...")
+saludo_Con_Parametros_Por_Defecto("Alex", "Buenos dias", "...")
 saludo_Con_Parametros_Por_Defecto("Juan", puntuacion="...")
 saludo_Con_Parametros_Por_Defecto("Carlos", "Buenas tardes")
 
@@ -61,7 +61,7 @@ def crear_perfil(**kwargs):
     for clave, valor in kwargs.items():
         print(f" {clave}: {valor}")
 
-crear_perfil(nombre="Danna", apellido="Gonzalez", edad=20, ciudad="Quito")
+crear_perfil(nombre="Alex", apellido="Macias", edad=20, ciudad="Quito")
 
 
 print("Funcion parametros combinacion de todos los tipos")
