@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Suspense, lazy, useEffect } from 'react'
 import { useAuthStore } from '@/presentation/store/auth.store'
 import ProtectedRoute from './ProtectedRoute'
-import AppShell from '@/presentation/components/AppShell'
-import PlaceholderPage from '../pages/PlaceholderPage'
+import AppShell from '../components/AppShell'
+
+
 
 // ─── Lazy imports ─────────────────────────────────────────────────────────────
 
@@ -33,6 +34,7 @@ const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPag
 const AdminProductsPage = lazy(() => import('../pages/admin/AdminProductsPage'))
 const AdminOrdersPage = lazy(() => import('../pages/admin/AdminOrdersPage'))
 const AdminOrderDetailPage = lazy(() => import('../pages/admin/AdminOrderDetailPage'))
+const AdminUsersPage = lazy(() => import('../pages/admin/AdminUsersPage'))
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
 // (Admin Productos/Órdenes/Usuarios) y cada uno
 // reemplaza aquí su propio <Route> por un lazy import real.
@@ -195,7 +197,7 @@ export default function AppRouter() {
                             path="/admin/users"
                             element={
                                 <ProtectedRoute requireStaff>
-                                    <PlaceholderPage title="Admin Usuarios — Módulo 13" />
+                                    <AdminUsersPage />
                                 </ProtectedRoute>
                             }
                         />
