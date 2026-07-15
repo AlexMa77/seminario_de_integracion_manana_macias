@@ -30,6 +30,7 @@ const ProfilePage = lazy(() => import('../pages/profile/ProfilePage'))
 // Admin — reales desde el Módulo 9 y 10
 const AdminDashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'))
 const AdminCategoriesPage = lazy(() => import('../pages/admin/AdminCategoriesPage'))
+const AdminProductsPage = lazy(() => import('../pages/admin/AdminProductsPage'))
 
 // El resto de páginas todavía no existen: se implementan en módulos posteriores
 // (Admin Productos/Órdenes/Usuarios) y cada uno
@@ -156,10 +157,44 @@ export default function AppRouter() {
             />
           </Route>
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-  )
+                        <Route
+                            path="/admin/categories"
+                            element={
+                                <ProtectedRoute requireStaff>
+                                    <AdminCategoriesPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/admin/products"
+                            element={
+                                <ProtectedRoute requireStaff>
+                                    <AdminProductsPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/admin/orders"
+                            element={
+                                <ProtectedRoute requireStaff>
+                                    <PlaceholderPage title="Admin Órdenes — Módulo 12" />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/admin/users"
+                            element={
+                                <ProtectedRoute requireStaff>
+                                    <PlaceholderPage title="Admin Usuarios — Módulo 13" />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Route>
+
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </Suspense>
+        </BrowserRouter>
+    )
 }
