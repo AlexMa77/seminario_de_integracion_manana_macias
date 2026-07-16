@@ -17,6 +17,7 @@ interface ProfileActions {
   updateProfile(dto: UpdateProfileDto): Promise<void>
   clearProfile(): void
   clearError(): void
+  uploadAvatar(file: File): Promise<void>
 }
 
 export const useProfileStore = create<ProfileState & ProfileActions>((set) => ({
@@ -57,5 +58,38 @@ export const useProfileStore = create<ProfileState & ProfileActions>((set) => ({
 
   clearError() {
     set({ error: null })
+  },
+
+  async uploadAvatar(file) {
+    try {
+      const response = await userUseCase.uploadAvatar(file) as any
+
+      set((state) => {
+        if (!state.profile) return state
+
+        let newAvatarUrl = ''
+
+        if (typeof response === 'string') {
+          newAvatarUrl = response
+        } else if (response && typeof response === 'object') {
+          newAvatarUrl = response.avatar_url || response.avatar || response.url || ''
+        }
+
+        if (!newAvatarUrl) {
+          return state
+        }
+
+        return {
+          profile: {
+            ...state.profile,
+            avatar_url: `${newAvatarUrl}?t=${new Date().getTime()}`
+          }
+        }
+      })
+    } catch (err) {
+      const message = err instanceof ApiException ? err.detail : 'No se pudo subir el avatar.'
+      set({ error: message })
+      throw err
+    }
   },
 }))
