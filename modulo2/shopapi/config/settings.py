@@ -105,4 +105,28 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# config/settings.py (Imported settings)
+MEDIA_URL  = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# --- Email -----------------------------------------------------------
+EMAIL_BACKEND       = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST          = config('EMAIL_HOST',    default='smtp.gmail.com')
+EMAIL_PORT          = config('EMAIL_PORT',    default=587, cast=int)
+EMAIL_USE_TLS       = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_USE_SSL       = config('EMAIL_USE_SSL', default=False, cast=bool)
+EMAIL_HOST_USER     = config('EMAIL_HOST_USER',     default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL  = config('DEFAULT_FROM_EMAIL',  default='ShopAPI <noreply@shopapi.local>')
+
+# URL del frontend para armar enlaces en correos (recuperación de contraseña)
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
+# Tiempo de validez del token de reset (en segundos). Por defecto Django usa 3 días.
+PASSWORD_RESET_TIMEOUT = 86400  # 24 horas
+=======
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9

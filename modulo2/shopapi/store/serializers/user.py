@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+# store/serializers/user.py
+=======
 # store/serializers/user.py — actualizar UserSerializer
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
@@ -31,18 +35,60 @@ class RegisterSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     num_orders = serializers.SerializerMethodField()
+<<<<<<< HEAD
+    avatar_url = serializers.SerializerMethodField()   # ← nuevo
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
     class Meta:
         model  = User
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name',
+<<<<<<< HEAD
+            'is_staff', 'is_active', 'date_joined', 'num_orders', 'avatar_url',
+=======
             'is_staff', 'is_active', 'date_joined', 'num_orders',
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
         ]
         read_only_fields = ['id', 'date_joined']
 
     def get_num_orders(self, obj):
         return obj.orders.count()
 
+<<<<<<< HEAD
+    def get_avatar_url(self, obj):                     # ← nuevo
+        request = self.context.get('request')
+        try:
+            avatar = obj.profile.avatar
+            if avatar:
+                return request.build_absolute_uri(avatar.url) if request else avatar.url
+        except Exception:
+            pass
+        return None
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    avatar     = serializers.ImageField(              # ← nuevo
+        source='profile.avatar', required=False, allow_null=True
+    )
+    avatar_url = serializers.SerializerMethodField()  # ← nuevo
+
+    class Meta:
+        model  = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'avatar', 'avatar_url']
+        read_only_fields = ['id']
+        extra_kwargs = {'avatar': {'write_only': True}}
+
+    def get_avatar_url(self, obj):
+        request = self.context.get('request')
+        try:
+            avatar = obj.profile.avatar
+            if avatar:
+                return request.build_absolute_uri(avatar.url) if request else avatar.url
+        except Exception:
+            pass
+        return None
+=======
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
@@ -50,6 +96,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model  = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
         read_only_fields = ['id']
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
     def validate_email(self, value):
         request = self.context.get('request')
@@ -57,6 +104,28 @@ class UserProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('This email is already in use.')
         return value
 
+<<<<<<< HEAD
+    def validate_avatar(self, value):
+        max_size    = 2 * 1024 * 1024  # 2 MB
+        valid_types = ['image/jpeg', 'image/png', 'image/webp']
+        if value and value.size > max_size:
+            raise serializers.ValidationError('Image size must not exceed 2 MB.')
+        if value and value.content_type not in valid_types:
+            raise serializers.ValidationError('Only JPEG, PNG, and WebP images are allowed.')
+        return value
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile', {})
+        instance     = super().update(instance, validated_data)
+        if profile_data:
+            profile = instance.profile
+            for attr, value in profile_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+        return instance
+
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(write_only=True)
@@ -71,4 +140,75 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, data):
         if data['new_password'] != data['new_password2']:
             raise serializers.ValidationError({'new_password2': 'Passwords do not match.'})
+<<<<<<< HEAD
         return data
+
+# store/serializers/user.py  (agregar al final)
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    """Paso 1: el usuario envía su email para solicitar el reset."""
+    email = serializers.EmailField()
+
+    # No validamos si el email existe en esta capa:
+    # la vista lo maneja en silencio para evitar enumeración de usuarios.
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    """Paso 2: el usuario envía uid + token + nueva contraseña."""
+    uid           = serializers.CharField()
+    token         = serializers.CharField()
+    new_password  = serializers.CharField(min_length=8, write_only=True)
+    new_password2 = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        # Decodificar el uid para obtener el usuario
+        try:
+            pk   = force_str(urlsafe_base64_decode(data['uid']))
+            user = User.objects.get(pk=pk)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            raise serializers.ValidationError({'uid': 'Enlace inválido o expirado.'})
+
+        # Verificar el token con el generador nativo de Django
+        if not default_token_generator.check_token(user, data['token']):
+            raise serializers.ValidationError({'token': 'Token inválido o expirado.'})
+
+        if data['new_password'] != data['new_password2']:
+            raise serializers.ValidationError({'new_password2': 'Las contraseñas no coinciden.'})
+
+        data['user'] = user
+        return data
+
+    def save(self):
+        user = self.validated_data['user']
+        user.set_password(self.validated_data['new_password'])
+        user.save()
+        return user
+
+# store/serializers/user.py  (agregar al final)
+
+class SendNotificationSerializer(serializers.Serializer):
+    """
+    Cuerpo del request para enviar una notificación manual.
+
+    - Si se provee `user_id`, el correo va solo a ese usuario.
+    - Si `user_id` es null u omitido, el correo se envía a todos los
+      usuarios activos que no son staff (envío masivo).
+    """
+    subject = serializers.CharField(max_length=200)
+    message = serializers.CharField()
+    user_id = serializers.IntegerField(required=False, allow_null=True)
+
+    def validate_user_id(self, value):
+        if value is not None:
+            if not User.objects.filter(pk=value, is_active=True, is_staff=False).exists():
+                raise serializers.ValidationError(
+                    'Usuario no encontrado, inactivo o es staff.'
+                )
+        return value
+=======
+        return data
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9

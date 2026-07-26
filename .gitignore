@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+.env
+=======
 # =========================================================
 # MONOREPO GLOBAL .gitignore (RECURSIVO)
 # ReactJS / React Native / Kotlin / Python / Django / Flutter
@@ -455,3 +458,4 @@ fun Paso01SumaPreview() {
     }
 }
 
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
