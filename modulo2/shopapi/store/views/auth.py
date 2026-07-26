@@ -44,6 +44,7 @@ class LogoutView(APIView):
                 {'error': 'Token is invalid or expired.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+<<<<<<< HEAD
         return Response({'message': 'Session closed successfully.'})
 
 # store/views/auth.py  (agregar al final)
@@ -101,3 +102,6 @@ class PasswordResetConfirmView(APIView):
             {'detail': 'Contraseña actualizada correctamente.'},
             status=status.HTTP_200_OK,
         )
+=======
+        return Response({'message': 'Session closed successfully.'})
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9

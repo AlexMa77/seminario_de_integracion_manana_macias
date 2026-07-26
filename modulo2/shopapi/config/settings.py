@@ -105,6 +105,7 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # config/settings.py (Imported settings)
@@ -126,3 +127,6 @@ FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
 
 # Tiempo de validez del token de reset (en segundos). Por defecto Django usa 3 días.
 PASSWORD_RESET_TIMEOUT = 86400  # 24 horas
+=======
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9

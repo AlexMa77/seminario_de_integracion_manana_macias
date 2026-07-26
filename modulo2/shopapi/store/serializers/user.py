@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # store/serializers/user.py
+=======
+# store/serializers/user.py — actualizar UserSerializer
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
@@ -31,19 +35,27 @@ class RegisterSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     num_orders = serializers.SerializerMethodField()
+<<<<<<< HEAD
     avatar_url = serializers.SerializerMethodField()   # ← nuevo
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
     class Meta:
         model  = User
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name',
+<<<<<<< HEAD
             'is_staff', 'is_active', 'date_joined', 'num_orders', 'avatar_url',
+=======
+            'is_staff', 'is_active', 'date_joined', 'num_orders',
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
         ]
         read_only_fields = ['id', 'date_joined']
 
     def get_num_orders(self, obj):
         return obj.orders.count()
 
+<<<<<<< HEAD
     def get_avatar_url(self, obj):                     # ← nuevo
         request = self.context.get('request')
         try:
@@ -76,6 +88,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
         except Exception:
             pass
         return None
+=======
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model  = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+        read_only_fields = ['id']
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
     def validate_email(self, value):
         request = self.context.get('request')
@@ -83,6 +104,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('This email is already in use.')
         return value
 
+<<<<<<< HEAD
     def validate_avatar(self, value):
         max_size    = 2 * 1024 * 1024  # 2 MB
         valid_types = ['image/jpeg', 'image/png', 'image/webp']
@@ -102,6 +124,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
             profile.save()
         return instance
 
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(write_only=True)
@@ -116,6 +140,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, data):
         if data['new_password'] != data['new_password2']:
             raise serializers.ValidationError({'new_password2': 'Passwords do not match.'})
+<<<<<<< HEAD
         return data
 
 # store/serializers/user.py  (agregar al final)
@@ -184,3 +209,6 @@ class SendNotificationSerializer(serializers.Serializer):
                     'Usuario no encontrado, inactivo o es staff.'
                 )
         return value
+=======
+        return data
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9

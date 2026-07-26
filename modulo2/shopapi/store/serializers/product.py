@@ -5,6 +5,7 @@ from store.serializers.category import CategorySerializer
 
 
 class ProductSummarySerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
     image_url = serializers.SerializerMethodField()   # ← nuevo
 
     class Meta:
@@ -16,6 +17,12 @@ class ProductSummarySerializer(serializers.ModelSerializer):
         if obj.image:
             return request.build_absolute_uri(obj.image.url) if request else obj.image.url
         return None
+=======
+
+    class Meta:
+        model  = Product
+        fields = ['id', 'name', 'price', 'stock', 'is_active']
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -27,7 +34,10 @@ class ProductSerializer(serializers.ModelSerializer):
     )
     price_with_tax = serializers.SerializerMethodField()
     in_stock       = serializers.SerializerMethodField()
+<<<<<<< HEAD
     image_url      = serializers.SerializerMethodField()   # ← nuevo
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
     class Meta:
         model  = Product
@@ -36,11 +46,17 @@ class ProductSerializer(serializers.ModelSerializer):
             'price', 'price_with_tax',
             'stock', 'in_stock', 'is_active',
             'category', 'category_id',
+<<<<<<< HEAD
             'image', 'image_url',             # ← nuevo
             'created_at', 'updated_at',
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
         extra_kwargs = {'image': {'required': False, 'allow_null': True}}
+=======
+            'created_at', 'updated_at',
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,12 +69,15 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_in_stock(self, obj):
         return obj.in_stock
 
+<<<<<<< HEAD
     def get_image_url(self, obj):
         request = self.context.get('request')
         if obj.image:
             return request.build_absolute_uri(obj.image.url) if request else obj.image.url
         return None
 
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
     def validate_price(self, value):
         if value <= 0:
             raise serializers.ValidationError('Price must be greater than 0.')
@@ -67,6 +86,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def validate_stock(self, value):
         if value < 0:
             raise serializers.ValidationError('Stock cannot be negative.')
+<<<<<<< HEAD
         return value
 
     def validate_image(self, value):
@@ -76,4 +96,6 @@ class ProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Image size must not exceed 2 MB.')
         if value and value.content_type not in valid_types:
             raise serializers.ValidationError('Only JPEG, PNG, and WebP images are allowed.')
+=======
+>>>>>>> 5881d08ee29c6ac8c3e90a8abb337f45ea580dd9
         return value
